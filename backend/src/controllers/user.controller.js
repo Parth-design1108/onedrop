@@ -4,6 +4,7 @@ import User from "../models/user.model.js";
 import { ApiError } from "../utils/apierror.js";
 import { ApiResponse } from "../utils/apiresponse.js";
 import bcrypt from "bcryptjs";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 
 const updateDetails = async (req, res) => {
@@ -14,7 +15,7 @@ const updateDetails = async (req, res) => {
             throw new ApiError(400, "All fields are required");
         }
 
-        
+
 
 
         const updatedUser = await User.findByIdAndUpdate(
@@ -47,15 +48,49 @@ const updateDetails = async (req, res) => {
 }
 
 const updateUserImage = async (req, res) => {
+    try {
+        const userImagePath = req.file?.path;
 
+        if (!userImagePath) {
+            throw new ApiError(404, "user image path not found");
+        }
+
+        const userImage = await uploadOnCloudinary(userImagePath);
+
+        if (!userImage) {
+            throw new ApiError(404, "User Image from Cloudinary not found");
+        }
+
+        const user = await User.findByIdAndUpdate(
+            req.user?._id,
+            {
+                $set: {
+                    userImage: userImage.url
+                }
+            },
+            { new: true }
+        ).select("-password");
+
+        if (!user) {
+            throw new ApiError(400, "userImage updation process failed")
+        }
+
+        return res.status(200)
+            .json(
+                new ApiResponse(200, user, "userImage updated successfully")
+            )
+
+    } catch (error) {
+        throw new ApiError(400, error.message)
+    }
 }
 
 const changePassword = async (req, res) => {
     try {
         const { oldPass, newPass } = req.body;
 
-        console.log("req",req.body);
-        
+        console.log("req", req.body);
+
 
         if (!oldPass || !newPass) {
             throw new ApiError(400, "All fields are required");
@@ -63,8 +98,8 @@ const changePassword = async (req, res) => {
 
         const user = await User.findById(req.user?._id)
 
-        console.log("user",user);
-        
+        console.log("user", user);
+
 
         if (!user) {
             throw new ApiError(400, "Invalid user");
@@ -73,8 +108,8 @@ const changePassword = async (req, res) => {
 
         const comparePass = bcrypt.compareSync(oldPass, user.password)
 
-        console.log("pass",comparePass);
-        
+        console.log("pass", comparePass);
+
 
         if (!comparePass) {
             throw new ApiError(400, "Password not match");
