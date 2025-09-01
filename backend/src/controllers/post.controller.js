@@ -1,7 +1,7 @@
 import { ApiError } from "../utils/apierror.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import Post from "../models/post.model.js";
-import { ApiResponse } from "../utils/apiresponse.js";
+import { ApiResponse } from "../utils/apiresponse.js"
 
 const createPost = async (req, res) => {
     try {
@@ -87,8 +87,8 @@ const deletePost = async (req, res) => {
 }
 const getAllPosts = async (req, res) => {
     try {
-        const startIndex = parseInt(req.query.startIndex) || 0;
-        const limit = parseInt(req.query.limit) || 9;
+        const startIndex = (req.query.startIndex) || 0;
+        const limit = (req.query.limit) || 9;
         const sortDirection = req.query.order === "asc" ? 1 : -1;
 
         const allPosts = await Post.find()

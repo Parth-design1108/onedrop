@@ -17,3 +17,5 @@ postRouter.route("/get-posts").get(getAllPosts)
 postRouter.route("/get-post/:postId").get(getPostById)
 
 export default postRouter;
+
+

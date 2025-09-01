@@ -9,12 +9,6 @@ const commentSchema = new Schema({
         type : mongoose.Types.ObjectId,
         ref : "User",
         required : true,
-        unique: true,
-    },
-    userId :{
-        type : mongoose.Types.ObjectId,
-        ref: "User",
-        required : true
     },
     postId : {
         type : mongoose.Types.ObjectId,
