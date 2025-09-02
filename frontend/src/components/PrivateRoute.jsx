@@ -6,7 +6,7 @@ const PrivateRoute = ({children}) => {
   // Get user data from Redux store
   const user = useSelector((state) => state.user);
   const userData = user?.currentUser;  // Extract current logged-in user details (if any)
-
+console.log(userData);
   // If user is not logged in
   if (!userData) {
     // Redirect user to sign-in page

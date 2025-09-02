@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -14,31 +14,31 @@ import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <>
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/create-post" element={<CreatePost />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-out" element={<SignOut />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/create-post" element={
-          <PrivateRoute>
-            <CreatePost />
-          </PrivateRoute>
-        } 
-        />
-        <Route path="/profile" element={
-          <PrivateRoute>
-            <Profile />
-          </PrivateRoute>
-        } />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-out" element={<SignOut />} />
+          <Route path="*" element={<NotFound />} />
+
+          <Route path="/create-post" element={
+            <PrivateRoute>
+              <CreatePost />
+            </PrivateRoute>
+          }
+          />
+          
+          <Route path="/profile" element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          } />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
     </>
   );
 }

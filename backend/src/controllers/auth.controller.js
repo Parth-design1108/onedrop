@@ -170,12 +170,16 @@ const register = async (req, res) => {
         const hashedPassword = bcrypt.hashSync(password, 10);
 
         const userImagePath = req.file?.path;
+        
+        console.log(userImagePath);
 
         if (!userImagePath) {
             throw new ApiError(400, "userImage file not found");
         }
 
         const userImage = await uploadOnCloudinary(userImagePath)
+
+        console.log(userImage);
 
         if (!userImage) {
             throw new ApiError(400, "userImage not found on cloudinary");
